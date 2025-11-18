@@ -17,25 +17,26 @@ export default function TabLayout() {
             <Ionicons name={focused ? 'home-sharp' : 'home-outline'} color={color} size={24} />
           ),
       }}/>
+
       <Tabs.Screen
         name='message'
         options={{
           title: 'Message',
           tabBarIcon: ({ color, focused }) => (
             <Feather name={focused ? 'message-circle' : 'message-circle'} color={color} size={24} />)
-      }}
-
+        }}
       />
+
       <Tabs.Screen
-        name='bio'
+        name='profile'
         options={{
-          title: 'Biography',
+          title: 'Profile',
           tabBarIcon: ({ color, focused }) => (
             focused ?
               <FontAwesome name={'user'} color={color} size={24}/>
               :<Feather name={'user'} color={color} size={24} />
           ),
-      }}/>
+        }}/>
     </Tabs>
   );
 }
