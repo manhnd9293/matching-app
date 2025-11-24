@@ -2,8 +2,9 @@ import axios from 'axios';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const httpClient = axios.create({
-  baseURL: `http://localhost:9000/api/v1`,
+  baseURL: `http://localhost:9001/api/v1`,
 });
+import { router } from 'expo-router';
 
 httpClient.interceptors.request.use(
   function (config) {
@@ -27,6 +28,14 @@ httpClient.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+    console.log({error})
+
+    if(error.response) {
+      if(error.response.status === 401) {
+        console.log('unauthenticated error');
+        router.navigate('/login');
+      }
+    }
     return Promise.reject(error);
   },
 );

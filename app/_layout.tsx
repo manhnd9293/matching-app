@@ -1,15 +1,30 @@
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { Stack } from "expo-router";
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-const queryClient = new QueryClient()
+import { StyleSheet } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
+const queryClient = new QueryClient();
 
 export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
-      <Stack>
-        <Stack.Screen name={'index'} options={{headerShown: true, title: 'Login'}}/>
-        <Stack.Screen name={'(tabs)'} options={{headerShown: false}}/>
-      </Stack>
+      <SafeAreaView style={styles.appContainer}>
+        <Stack>
+          <Stack.Screen name={"(tabs)"} options={{ headerShown: false }} />
+          <Stack.Screen
+            name={"login"}
+            options={{
+              headerShown: false,
+              title: "Login",
+            }}
+          />
+        </Stack>
+      </SafeAreaView>
     </QueryClientProvider>
   );
 }
-
+const styles = StyleSheet.create({
+  appContainer: {
+    flex: 1,
+  },
+});
