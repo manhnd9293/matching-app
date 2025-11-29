@@ -1,6 +1,10 @@
 import { PRIMARY_COLOR } from "@/utils/constants";
+import { useMutation } from '@tanstack/react-query';
 import { Controller, useForm } from "react-hook-form";
 import { Button, StyleSheet, Text, TextInput, View } from "react-native";
+import { AuthService } from '@/services/auth.service';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { router } from 'expo-router';
 
 export interface LoginDto {
   email: string;
@@ -8,6 +12,12 @@ export interface LoginDto {
 }
 
 export default function LoginScreen() {
+
+  const {mutateAsync: loginMutate, isPending, isError, error} = useMutation({
+    mutationKey: ['login_mt'],
+    mutationFn: AuthService.login
+  });
+
   const {
     control,
     handleSubmit,
@@ -15,12 +25,20 @@ export default function LoginScreen() {
     reset: resetForm,
   } = useForm<LoginDto>({
     defaultValues: {
-      email: "",
-      password: "",
+      email: "m1@yopmail.com",
+      password: "123123",
     },
   });
 
-  const onSubmit = handleSubmit((data) => console.log(data));
+  const onSubmit = handleSubmit(async (data) => {
+    const response = await loginMutate(data);
+    const {atk, rtk} = response;
+    console.log({atk, rtk})
+    await AsyncStorage.setItem("accessToken", atk);
+    await AsyncStorage.setItem("refreshToken", rtk);
+
+    router.push('/');
+  });
 
   return (
     <View style={styles.container}>

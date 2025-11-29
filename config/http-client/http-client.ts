@@ -7,9 +7,9 @@ const httpClient = axios.create({
 import { router } from 'expo-router';
 
 httpClient.interceptors.request.use(
-  function (config) {
+  async function (config) {
     // Do something before request is sent
-    const accessToken = AsyncStorage.getItem("accessToken");
+    const accessToken = await AsyncStorage.getItem("accessToken");
     config.headers["Authorization"] = `Bearer ${accessToken}`;
     return config;
   },
